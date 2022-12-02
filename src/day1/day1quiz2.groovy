@@ -21,9 +21,7 @@ input.eachLine { line ->
 
 
 elfs = elfs.sort();
-int max = elfs[-1]
-int max2 = elfs[-2]
-int max3 = elfs[-3]
-
-int maxCalories = max+max2+max3
+int maxCalories = elfs[-1..-3].sum()
 println maxCalories
+
+
