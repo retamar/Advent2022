@@ -10,9 +10,18 @@ def parseRange = {String rangeToBeParsed ->
 	
 }
 
-def line = "2-8,13-14"
-def rangeListToBeParsed = line.split(",")
-def elfRanges = rangeListToBeParsed.collect {parseRange(it)}
+int overlappedAreas = 0
 
-boolean overlapped = elfRanges[0].containsAll(elfRanges[1]) || elfRanges[1].containsAll(elfRanges[0])
-println overlapped
+File input = "docs/day4.txt" as File
+
+input.eachLine { line ->
+	def rangeListToBeParsed = line.split(",")
+	def elfRanges = rangeListToBeParsed.collect {parseRange(it)}
+	
+	boolean overlapped = elfRanges[0].containsAll(elfRanges[1]) || elfRanges[1].containsAll(elfRanges[0])	
+	if (overlapped) {
+		overlappedAreas++
+	}
+}
+
+println overlappedAreas
