@@ -18,7 +18,7 @@ input.eachLine { line ->
 	def rangeListToBeParsed = line.split(",")
 	def elfRanges = rangeListToBeParsed.collect {parseRange(it)}
 	
-	boolean overlapped = elfRanges[0].intersect(elfRanges[1])	
+	boolean overlapped = elfRanges[0].containsAll(elfRanges[1]) || elfRanges[1].containsAll(elfRanges[0])	
 	if (overlapped) {
 		overlappedAreas++
 	}
