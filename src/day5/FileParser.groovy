@@ -32,8 +32,9 @@ class FileParser {
 	
 	
 	private void parseShip(def shipDefinition) {
-				
-		def deckDefinition = shipDefinition[-1]
+		
+		shipDefinition = shipDefinition.reverse()		
+		def deckDefinition = shipDefinition[0]
 		int howManyDecksThereAre = deckDefinition[-2] as Integer
 		this.ship = new Ship(howManyDecksThereAre)		
 		shipDefinition.each{ line->
@@ -49,14 +50,14 @@ class FileParser {
 		int initialDataPosition = 1
 		int spanBetweenNumbers = 4
 		int currentPosition = 1
-		int currentDeck = 0
+		int currentDeck = 1
 		
 		while (currentPosition < line.size()-1) {
 			def stackedGood = line[currentPosition]
 			if (!stackedGood) {
 				return
 			}
-			ship.pushToDeck(currentDeck, stackedGood)			
+			ship.load(currentDeck, stackedGood)			
 			currentPosition+=spanBetweenNumbers
 			currentDeck++
 		}

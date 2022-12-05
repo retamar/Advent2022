@@ -10,9 +10,23 @@ class Ship {
 		}
 	}
 	
-	void pushToDeck(int deck, def goodToStack) {
-		def deckStack= this.decks.get(deck)
+	
+	def unload(int deck) {
+		def deckStack= this.decks.get(deck-1)
+		return deckStack.pop()
+	}
+	
+	void load(int deck, def goodToStack) {
+		
+		if (!goodToStack.trim()) {
+			return
+		}		
+		def deckStack= this.decks.get(deck-1)
 		deckStack.push(goodToStack)
+	}
+	
+	def getOnTop() {
+		decks*.peek()		
 	}
 	
 	String toString() {
