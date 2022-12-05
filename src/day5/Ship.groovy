@@ -16,6 +16,20 @@ class Ship {
 		return deckStack.pop()
 	}
 	
+	def unloadPacked(int deck, int packetSize) {
+		def packet = new Stack()
+		(1..packetSize).each {
+			packet.push(unload(deck))
+		}
+		return packet
+	}
+	
+	def loadPacked(int deck, Stack packet) {
+		while (!packet.isEmpty()) {
+			load(deck, packet.pop())
+		}
+	}
+	
 	void load(int deck, def goodToStack) {
 		
 		if (!goodToStack.trim()) {
