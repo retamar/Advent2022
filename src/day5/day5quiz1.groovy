@@ -1,7 +1,7 @@
 package day5
 
 
-File input = "docs/day5test.txt" as File
+File input = "docs/day5.txt" as File
 FileParser parser = new FileParser(input)
 parser.parse()
 
@@ -21,4 +21,6 @@ moves.each { move->
 	}	
 }
 
-println ship.getOnTop()
+ship.getOnTop().each { 
+	print it
+}
