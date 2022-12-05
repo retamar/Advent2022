@@ -6,6 +6,8 @@ class FileParser {
 	
 	Ship ship;
 	
+	def moves = []
+	
 	
 	FileParser(File file) {
 		this.file = file
@@ -24,10 +26,9 @@ class FileParser {
 		}
 		
 		parseShip(shipDefinition)
-		//parseMoves(movesDefinition)
+		parseMoves(movesDefinition)
 		
 	}
-	
 	
 	
 	private void parseShip(def shipDefinition) {
@@ -59,6 +60,15 @@ class FileParser {
 			currentPosition+=spanBetweenNumbers
 			currentDeck++
 		}
+	}
+	
+	private void parseMoves(def movesDefinition) {
+		
+		movesDefinition.each {singleMoveDefinition->
+			def tokenizedMove = singleMoveDefinition.split(" ")
+			moves << new Move(tokenizedMove[1] as Integer, tokenizedMove[3] as Integer, tokenizedMove[5] as Integer)
+		}
+		
 	}
 	
 }

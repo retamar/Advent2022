@@ -8,5 +8,6 @@ parser.parse()
 Ship ship = parser.ship
 println ship
 
-
+def moves = parser.moves
+println moves
 
