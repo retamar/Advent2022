@@ -55,6 +55,7 @@ def ls_command = {def instruction, def iterator ->
 		} else {
 			currentDir.addFile(parsedInstruction[0] as Integer, parsedInstruction[1])
 		}
+		println currentDir.content
 	}
 	if (currentLine) {
 		executeNextInstruction(currentLine, iterator)
@@ -65,8 +66,14 @@ def ls_command = {def instruction, def iterator ->
 
 
 COMMANDS = ["cd":cd_command, "ls":ls_command]
-File input = "docs/day7test.txt" as File
+File input = "docs/day7.txt" as File
 Iterator inputIterator = input.iterator()
 while (inputIterator.hasNext()) {
 	executeNextInstruction(inputIterator.next(), inputIterator)
 }
+
+def allDirectoriesWithATotalSizeAtMost100000 = rootDir.findAllSubDirectoriesWithATotalSizeAtMost(100000)
+println allDirectoriesWithATotalSizeAtMost100000
+
+int totalSize = allDirectoriesWithATotalSizeAtMost100000.sum{it.size}
+println "Total Size $totalSize"

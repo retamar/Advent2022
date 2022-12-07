@@ -24,6 +24,25 @@ class Directory {
 	}
 	
 	
+	int getSize() {
+		return content.sum { it.size }
+	}
+	
+	def findAllSubDirectoriesWithATotalSizeAtMost(int size) {
+		def result = []
+		content.each {
+			if (!(it instanceof Directory)) {
+				return
+			}
+			if (it.size <= size) {
+				result << it 
+			}
+			
+			result.addAll(it.findAllSubDirectoriesWithATotalSizeAtMost(size))
+		}
+		return result		
+	}
+	
 	String toString() {
 		return "<DIR:$name>"
 	}	
