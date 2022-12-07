@@ -28,6 +28,18 @@ class Directory {
 		return content.sum { it.size }
 	}
 	
+	def getAllSubdirectories() {
+		def result = []
+		content.each {
+			if (!(it instanceof Directory)) {
+				return
+			}
+			result << it
+			result.addAll(it.allSubdirectories)
+		}
+		return result
+	}
+	
 	def findAllSubDirectoriesWithATotalSizeAtMost(int size) {
 		def result = []
 		content.each {

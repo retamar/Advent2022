@@ -1,7 +1,7 @@
 package day7
 
 
-File input = "docs/day7.txt" as File
+File input = "docs/day7test.txt" as File
 
 
 def console = new ConsoleOutputParser()
