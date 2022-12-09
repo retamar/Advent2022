@@ -1,6 +1,5 @@
 package day9
 
-import com.sun.org.apache.bcel.internal.generic.RETURN
 
 class Point {
 	private int x
@@ -42,11 +41,7 @@ class Point {
 	}
 	
 	def getAdjacents() {
-		return getOrthogonalAdjacents() +[
-			new Point(x+1, y+1),
-			new Point(x-1, y-1),
-			new Point(x-1, y+1),
-			new Point(x+1, y-1)]
+		return getOrthogonalAdjacents() +getDiagonalAdjacents()
 	}
 
 	def getOrthogonalAdjacents() {
@@ -56,6 +51,18 @@ class Point {
 			new Point(x, y-1),
 			new Point(x, y+1)]		
 	}
+	
+	def getDiagonalAdjacents() {
+		return [
+			new Point(x+1, y+1),
+			new Point(x-1, y-1),
+			new Point(x-1, y+1),
+			new Point(x+1, y-1)]
+	}
+
+	boolean isOrthogonal(Point p) {
+		return this.x == p.x || this.y == p.y
+	}
 
 	def getClosestOrthogonalAdjacent(Point p) {
 		if (p == this) {
@@ -63,6 +70,14 @@ class Point {
 		}
 
 		getOrthogonalAdjacents().sort{it.distanceTo(p)}.get(0)
+	}
+
+	def getClosestDiagonalAdjacent(Point p) {
+		if (p == this) {
+			return this
+		}
+
+		getDiagonalAdjacents().sort{it.distanceTo(p)}.get(0)
 	}
 
 	
