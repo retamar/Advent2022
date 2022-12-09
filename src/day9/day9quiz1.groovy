@@ -1,36 +1,28 @@
 package day9
 
 
-def head = new Point(0,0)
-def tail = new Point(0,0)
-def tailPositions = [tail]
+Rope rope = new Rope(1)
 
 def moveHeadUp = {
-	head = new Point(head.x, head.y+1)
+	rope.moveRopeUp()
 }
 
 def moveHeadDown = {
-	head = new Point(head.x, head.y-1)
+	rope.moveRopeDown()
 }
 
 def moveHeadLeft = {
-	head = new Point(head.x-1, head.y)
+	rope.moveRopeLeft()
 }
 
 def moveHeadRight = {
-	head = new Point(head.x+1, head.y)
+	rope.moveRopeRight()
 }
+
 
 def COMMANDS = ["R":moveHeadRight, "U":moveHeadUp, "L":moveHeadLeft, "D":moveHeadDown]
 
 
-def moveTailNextToHead = {
-	if (!head.isAdjacent(tail)) {
-		Point closestAdjacent = head.getClosestOrthogonalAdjacent(tail)
-		tail = closestAdjacent
-		tailPositions << closestAdjacent
-	}	
-}
 
 File input = "docs/day9.txt" as File
 input.eachLine { line ->
@@ -41,12 +33,11 @@ input.eachLine { line ->
 	println "$command  - $moves"
 	(1..moves).each {
 		COMMANDS[command].call()
-		moveTailNextToHead()
-		println "H: $head - T:$tail"
 	}
+	
 }
 
-def uniqueTailPositions = tailPositions as Set
+def uniqueTailPositions = rope.tailPositions as Set
 println uniqueTailPositions
 
 println uniqueTailPositions.size()
