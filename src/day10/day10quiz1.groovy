@@ -18,7 +18,7 @@ File input = "docs/day10.txt" as File
 def program = new ProgramParser().parse(input)
 println program
 
-ProgramContext context = new ProgramContext()
+SignalMeter context = new SignalMeter()
 executeProgram(program, context)
 println context
 println context.signalTicks
