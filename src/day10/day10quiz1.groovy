@@ -19,7 +19,6 @@ def executeProgram = {def program, def context ->
 			instruction.execute(context)
 			context.nextCycle()
 		}
-		println context.currentCycle
 	}
 }
 
@@ -32,4 +31,5 @@ println program
 ProgramContext context = new ProgramContext()
 executeProgram(program, context)
 println context
+println context.signalTicks
 
