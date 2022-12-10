@@ -12,7 +12,24 @@ def parseProgram = {File input ->
 	return program
 }
 
+def executeProgram = {def program, def context ->
+	program.each {instruction ->
+		println instruction
+		while (!instruction.finished()) {
+			instruction.execute(context)
+			context.nextCycle()
+		}
+		println context.currentCycle
+	}
+}
+
+
 
 File input = "docs/day10test.txt" as File
 def program = parseProgram(input)
 println program
+
+ProgramContext context = new ProgramContext()
+executeProgram(program, context)
+println context
+
