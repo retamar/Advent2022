@@ -6,8 +6,8 @@ def executeProgram = {def program, def screen ->
 	program.each {instruction ->
 		println instruction
 		while (!instruction.finished()) {
-			instruction.execute(screen)
 			screen.nextCycle()
+			instruction.execute(screen)			
 		}
 	}
 }

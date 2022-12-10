@@ -3,16 +3,22 @@ package day10
 class Screen extends ProgramContext {
 	
 	
-	int currentPosition = 1
+	int currentPosition = 0
 	
 	int lineLenght = 40
 	
 	
-	def display = [[]]
+	def display = [createLine()]
+	
+	Screen() {
+		currentCycle = 0
+	}
 	
 	void nextCycle() {
 		super.nextCycle()
-		paintPixel()
+		println this
+		paintPixel()		
+		println "$currentPosition, ${getCurrentLine()}"
 		moveToNextDisplayPostion()
 	}
 	
@@ -33,19 +39,25 @@ class Screen extends ProgramContext {
 		}
 	}
 	
-	private void paintPixel() {
-		if (currentCycle in getCurrentPixelRange()) {
-			getCurrentLine() <<"#"
-		} else {
-			getCurrentLine() <<"."
+	private def createLine() {
+		def line = []
+		(1..lineLenght).each {
+			line << "."
 		}
+		return line
+	}
+	
+	private void paintPixel() {
+		if (currentPosition in getCurrentPixelRange()) {
+			getCurrentLine()[currentPosition] = "#"
+		} 
 	}
 	
 	private void moveToNextDisplayPostion() {
 		currentPosition ++
-		if (currentPosition > lineLenght) {
-			currentPosition = 1
-			display << currentLine								
+		if (currentPosition >= lineLenght) {
+			currentPosition = 0
+			display << createLine()								
 		}
 	}
 }
