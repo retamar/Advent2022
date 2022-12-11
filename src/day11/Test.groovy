@@ -8,7 +8,7 @@ class Test {
 	
 	int whenFalse
 	
-	int test(int worryValue) {
+	double test(double worryValue) {
 		
 		return (worryValue % divisible == 0) ? whenTrue : whenFalse
 	}

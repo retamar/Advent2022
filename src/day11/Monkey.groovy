@@ -10,7 +10,11 @@ class Monkey {
 	
 	Test test
 	
-	int currentWorryLevel
+	double currentWorryLevel
+	
+	int inspectionTimes = 0
+	
+	int inspectionWorrinessDivider = 3
 	
 	void doMonkeyTurns(def otherMonkeys) {
 		while (items) {
@@ -19,11 +23,12 @@ class Monkey {
 		}
 	}
 	
-	void receiveItem(int item) {
+	void receiveItem(double item) {
 		this.items << item
 	}
 	
 	private int doTurn() {
+		this.inspectionTimes++
 		this.currentWorryLevel = takeItem()
 		this.currentWorryLevel = worry(this.currentWorryLevel)
 		this.currentWorryLevel = bore(this.currentWorryLevel)
@@ -31,19 +36,19 @@ class Monkey {
 	}
 	
 	
-	private Integer takeItem() {
-		return (items) ? items.remove(0) : null
+	private int takeItem() {
+		return items.remove(0)
 	}
 	
-	private int worry(int item) {
+	private double worry(double item) {
 		return operation.execute(item)
 	}
 	
-	private int bore(int worryLevel) {
-		return (int) worryLevel/3
+	private double bore(double worryLevel) {
+		return Math.floor(worryLevel/inspectionWorrinessDivider)
 	}
 	
-	private int send(int worryLevel) {
+	private double send(double worryLevel) {
 		return test.test(worryLevel)
 	}
 	

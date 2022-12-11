@@ -2,6 +2,8 @@ package day11
 
 class MonkeysFactory {
 	
+	int worrinessDivider = 3
+	
 	def parse(File input) {
 		
 		def monkeys = []
@@ -13,7 +15,7 @@ class MonkeysFactory {
 	}
 	
 	private Monkey parseMonkey(Iterator iterator) {
-		Monkey monkey = new Monkey()
+		Monkey monkey = new Monkey(inspectionWorrinessDivider: this.worrinessDivider)
 		loadHeader(monkey, iterator)
 		loadItems(monkey, iterator)
 		loadOperation(monkey, iterator)
