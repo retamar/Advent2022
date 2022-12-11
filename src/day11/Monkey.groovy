@@ -32,4 +32,8 @@ class Monkey {
 	private int send(int worryLevel) {
 		return test.test(worryLevel)
 	}
+	
+	String toString() {
+		return "Monkey $id - Items: $items - Operation: $operation - Test: $test"
+	}
 }
