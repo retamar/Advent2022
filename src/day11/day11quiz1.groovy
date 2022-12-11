@@ -5,7 +5,7 @@ int rounds = 20
 
 def monkeys = []
 File input = "docs/day11.txt" as File
-MonkeysFactory monkeysFactory = new MonkeysFactory()
+MonkeysFactory monkeysFactory = new MonkeysFactory(boredMonkeyClosure:{Math.floor(it/3)})
 monkeys = monkeysFactory.parse(input)
 
 println monkeys

@@ -8,7 +8,7 @@ class Test {
 	
 	int whenFalse
 	
-	int test(int worryValue) {
+	int test(BigInteger worryValue) {
 		
 		return (worryValue % divisible == 0) ? whenTrue : whenFalse
 	}

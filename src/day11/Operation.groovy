@@ -10,7 +10,7 @@ class Operation {
 	
 	String operator
 	
-	def OPERANDS = ["+":{int l, int r -> l+r}, "*":{int l, int r -> l*r}]
+	def OPERANDS = ["+":{BigInteger l, BigInteger r -> l+r}, "*":{BigInteger l, BigInteger r -> l*r}]
 	
 	
 	Operation(def leftOperand, String operator, def rightOperand) {
@@ -24,25 +24,25 @@ class Operation {
 	}
 	
 	
-	int getLeftOperandValue(int worryLevel) {
+	BigInteger getLeftOperandValue(BigInteger worryLevel) {
 		if (leftOperand == OLD) {
 			return worryLevel
 		}
-		return leftOperand as Double
+		return leftOperand as BigInteger
 	}
 	
-	int getRightOperandValue(int worryLevel) {
+	BigInteger getRightOperandValue(BigInteger worryLevel) {
 		if (rightOperand == OLD) {
 			return worryLevel
 		}
 		
-		return rightOperand as Double
+		return rightOperand as BigInteger
 	}
 	
-	int execute(int worryLevel) {
+	BigInteger execute(BigInteger worryLevel) {
 		
-		int leftValue = getLeftOperandValue(worryLevel)
-		int rightValue = getRightOperandValue(worryLevel)
+		BigInteger leftValue = getLeftOperandValue(worryLevel)
+		BigInteger rightValue = getRightOperandValue(worryLevel)
 		
 		return OPERANDS[operator].call(leftValue, rightValue)
 	}

@@ -10,11 +10,13 @@ class Monkey {
 	
 	Test test
 	
-	int currentWorryLevel
+	BigInteger currentWorryLevel
 	
 	int inspectionTimes = 0
 	
-	int inspectionWorrinessDivider = 3
+	def boredMonkeyClosure
+
+	
 	
 	void doMonkeyTurns(def otherMonkeys) {
 		while (items) {
@@ -23,7 +25,7 @@ class Monkey {
 		}
 	}
 	
-	void receiveItem(int item) {
+	void receiveItem(BigInteger item) {
 		this.items << item
 	}
 	
@@ -36,19 +38,23 @@ class Monkey {
 	}
 	
 	
-	private int takeItem() {
+	private BigInteger takeItem() {
 		return items.remove(0)
 	}
 	
-	private int worry(int item) {
+	private BigInteger worry(BigInteger item) {
 		return operation.execute(item)
 	}
 	
-	private int bore(int worryLevel) {
-		return Math.floor(worryLevel/inspectionWorrinessDivider)
+	private BigInteger bore(BigInteger worryLevel) {
+		return boredMonkeyClosure.call(worryLevel)
 	}
+////			worryLevel = Math.floor(worryLevel/inspectionWorrinessDivider)
+//
+//		return (worryLevel % 96577)
+//	}
 	
-	private int send(int worryLevel) {
+	private int send(BigInteger worryLevel) {
 		return test.test(worryLevel)
 	}
 	
