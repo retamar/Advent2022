@@ -9,6 +9,7 @@ class Test {
 	int whenFalse
 	
 	int test(int worryValue) {
+		
 		return (worryValue % divisible == 0) ? whenTrue : whenFalse
 	}
 	

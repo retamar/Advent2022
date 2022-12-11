@@ -10,15 +10,29 @@ class Monkey {
 	
 	Test test
 	
-	int doTurn() {
-		int worryLevel = takeItem()
-		worryLevel = worry(worryLevel)
-		worryLevel = bore(worryLevel)
-		return send(worryLevel)
+	int currentWorryLevel
+	
+	void doMonkeyTurns(def otherMonkeys) {
+		while (items) {
+			int itemDestination = doTurn()
+			otherMonkeys[itemDestination].receiveItem(this.currentWorryLevel)
+		}
 	}
 	
-	private int takeItem() {
-		return items.remove(0)
+	void receiveItem(int item) {
+		this.items << item
+	}
+	
+	private int doTurn() {
+		this.currentWorryLevel = takeItem()
+		this.currentWorryLevel = worry(this.currentWorryLevel)
+		this.currentWorryLevel = bore(this.currentWorryLevel)
+		return send(this.currentWorryLevel)
+	}
+	
+	
+	private Integer takeItem() {
+		return (items) ? items.remove(0) : null
 	}
 	
 	private int worry(int item) {
@@ -34,6 +48,6 @@ class Monkey {
 	}
 	
 	String toString() {
-		return "Monkey $id - Items: $items - Operation: $operation - Test: $test"
+		return "Monkey $id - Items: $items - Operation: $operation - Test: $test - WorryLevel $currentWorryLevel"
 	}
 }
