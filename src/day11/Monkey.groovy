@@ -10,7 +10,7 @@ class Monkey {
 	
 	Test test
 	
-	double currentWorryLevel
+	int currentWorryLevel
 	
 	int inspectionTimes = 0
 	
@@ -23,7 +23,7 @@ class Monkey {
 		}
 	}
 	
-	void receiveItem(double item) {
+	void receiveItem(int item) {
 		this.items << item
 	}
 	
@@ -40,15 +40,15 @@ class Monkey {
 		return items.remove(0)
 	}
 	
-	private double worry(double item) {
+	private int worry(int item) {
 		return operation.execute(item)
 	}
 	
-	private double bore(double worryLevel) {
+	private int bore(int worryLevel) {
 		return Math.floor(worryLevel/inspectionWorrinessDivider)
 	}
 	
-	private double send(double worryLevel) {
+	private int send(int worryLevel) {
 		return test.test(worryLevel)
 	}
 	

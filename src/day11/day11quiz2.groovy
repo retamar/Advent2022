@@ -1,11 +1,11 @@
 package day11
 
-int rounds = 20
+int rounds = 10000
 
 
 def monkeys = []
-File input = "docs/day11.txt" as File
-MonkeysFactory monkeysFactory = new MonkeysFactory()
+File input = "docs/day11test.txt" as File
+MonkeysFactory monkeysFactory = new MonkeysFactory(worrinessDivider: 1)
 monkeys = monkeysFactory.parse(input)
 
 println monkeys
@@ -20,6 +20,7 @@ println monkeys
 }
 
 def mostActiveMonkeys = monkeys.sort{it.inspectionTimes}
-int monkeyBusinessLevel = mostActiveMonkeys[-1].inspectionTimes * mostActiveMonkeys[-2].inspectionTimes
+println monkeys.inspectionTimes
+double monkeyBusinessLevel = mostActiveMonkeys[-1].inspectionTimes * mostActiveMonkeys[-2].inspectionTimes
 println monkeyBusinessLevel
 
