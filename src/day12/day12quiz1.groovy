@@ -37,6 +37,7 @@ mapAsText.eachWithIndex { line, yIndex->
 
 map.print()
 
+
 PriorityQueue unsettledNodes = new PriorityQueue({Coord node1, Coord node2 ->
 	return node1.minDistanceFromSource <=> node2.minDistanceFromSource
 } as Comparator)

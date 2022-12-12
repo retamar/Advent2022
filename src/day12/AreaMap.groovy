@@ -23,6 +23,25 @@ class AreaMap {
 		map[coord.x][coord.y]=coord
 	}
 	
+	void resetCoords() {
+		for (int i=0; i<mapLenght; i++) {
+			for (int j=0; j<mapWidth; j++) {
+				map[j][i].minDistanceFromSource = Integer.MAX_VALUE
+			}
+		}
+	}
+	
+	def findAllCoordsWithHeight(def height) {
+		def result = []
+		for (int i=0; i<mapLenght; i++) {
+			for (int j=0; j<mapWidth; j++) {
+				if (map[j][i].height == height) {
+					result << map[j][i]
+				}
+			}
+		}
+		return result
+	}
 	
 	def getOrthogonalMovesFrom(Coord coord) {
 		
