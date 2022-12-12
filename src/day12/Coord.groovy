@@ -11,6 +11,8 @@ class Coord {
 	
 	def shortestPath = []
 	
+	int minDistanceFromSource = Integer.MAX_VALUE
+	
 	Coord(int x, int y, def height) {
 		super()
 		this.x = x

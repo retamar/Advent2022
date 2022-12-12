@@ -11,7 +11,7 @@ AreaMap map = new AreaMap()
 map.mapWidth = mapAsText[0].size()
 map.mapLenght = mapAsText.size()
 
-map.map =  new String[map.mapWidth][map.mapLenght]
+map.map =  new Coord[map.mapWidth][map.mapLenght]
 Coord startingPoint;
 Coord endPoint;
 
@@ -20,14 +20,16 @@ mapAsText.eachWithIndex { line, yIndex->
 	line.eachWithIndex { cell, xIndex ->
 		
 		def height = SPECIAL_CHARACTERS_HEIGHT_MAP.get(cell) ?: cell
-		map.map[xIndex][yIndex] = height
+		Coord coord = new Coord(xIndex, yIndex, height)
+		map.setCoord(coord)
 		
 		if (cell == "S") {
-			startingPoint = new Coord(xIndex, yIndex, height)
+			startingPoint = coord 
+			startingPoint.minDistanceFromSource = 0
 		}
 		
 		if (cell == "E") {
-			endPoint = new Coord(xIndex, yIndex, height)
+			endPoint = coord
 		}
 	}
 }
@@ -35,74 +37,27 @@ mapAsText.eachWithIndex { line, yIndex->
 
 map.print()
 
-def visitedNodes = [] as Set
-PriorityQueue openSolutions = new PriorityQueue({def path1, def path2 ->
-	if ((path1.lastStep in visitedNodes) && !(path2.lastStep in visitedNodes)) {
-		return 1
-	}
-	if (!(path1.lastStep in visitedNodes) && (path2.lastStep in visitedNodes)) {
-		return -1
-	}
-	return path1.distanceTo(endPoint) <=> path2.distanceTo(endPoint)
+PriorityQueue unsettledNodes = new PriorityQueue({Coord node1, Coord node2 ->
+	return node1.minDistanceFromSource <=> node2.minDistanceFromSource
 } as Comparator)
-PriorityQueue closedSolutions = new PriorityQueue({def path1, def path2 ->
-	return path1.distance <=> path2.distance
-} as Comparator)
+def settledNodes = []
+unsettledNodes.add(startingPoint)
 
-
-openSolutions.add(new Path(startingPoint))
-
-
-while (openSolutions) {
-	
-	Path workingSolution = openSolutions.poll()
-	Coord lastStep = workingSolution.lastStep
-	
-	if (closedSolutions) {
-		Path shortestPath = closedSolutions.peek()
-		if (shortestPath.distance <= workingSolution.distance + lastStep.distanceTo(endPoint)) {
-			continue
+while (unsettledNodes) {
+	Coord step = unsettledNodes.poll()
+	def moves = map.getOrthogonalMovesFrom(step)
+	moves.each { move->
+		if (!(move in settledNodes)) {
+			if (step.minDistanceFromSource + 1 < move.minDistanceFromSource) {
+				move.minDistanceFromSource = step.minDistanceFromSource+1
+				move.shortestPath << step
+				unsettledNodes.add(move)
+			}
 		}
 	}
-	
-	
-	if (!(lastStep in visitedNodes)) {
-		visitedNodes << lastStep
-	}
-	
-	println "${lastStep.distanceTo(endPoint)} N: ${visitedNodes.size()}"
-	if (closedSolutions) {
-		println "S: ${closedSolutions.peek().distance}"
-	}
-	
-	def moves = map.getOrthogonalMovesFrom(lastStep)
-	def unvisitedMoves = moves.findAll{!(it in visitedNodes)}
-	def visitedMoves = moves.findAll{it in visitedNodes}
-	
-	(unvisitedMoves+visitedMoves).each {step ->
-		
-		if (workingSolution.hasVisited(step)) {
-			return
-		}
-		
-		
-		Path nextPath = workingSolution.fork(step)
-		if (nextPath.hasVisited(endPoint)) {
-			closedSolutions.add(nextPath)
-		} else {
-			openSolutions.add(nextPath)
-		}
-				
-	}
-
-	
-	
-	//println "VISITED NODES ${visitedNodes.size()} DE ${map.mapWidth * map.mapLenght} - OPEN SOLUTIONS: ${openSolutions.size()} - FOUND PATHS: ${closedSolutions.size()}"
+	settledNodes << step	
 }
 
-println closedSolutions
-
-println "SHORTEST DISTANCE ${closedSolutions.poll().distance}"
-
-
+println endPoint
+println endPoint.minDistanceFromSource
 

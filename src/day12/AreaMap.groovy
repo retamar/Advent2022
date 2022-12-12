@@ -6,16 +6,21 @@ class AreaMap {
 	
 	int mapLenght
 	
-	String[][] map
+	Coord[][] map
+		
 	
 	
 	void print() {
 		for (int i=0; i<mapLenght; i++) {
 			for (int j=0; j<mapWidth; j++) {
-				print map[j][i]
+				print map[j][i].height
 			}
 			println ""
 		}
+	}
+	
+	void setCoord(Coord coord) {
+		map[coord.x][coord.y]=coord
 	}
 	
 	
@@ -23,30 +28,32 @@ class AreaMap {
 		
 		
 		def moves = []
-		if (coord.x > 0) {
-			Coord left = new Coord(coord.x-1, coord.y, map[coord.x-1][coord.y])
-			if (coord.canMoveTo(left)) {
-				moves << left
-			}
-		}
 		if (coord.x < mapWidth-1) {
-			Coord right = new Coord(coord.x+1, coord.y, map[coord.x+1][coord.y])
+			Coord right = map[coord.x+1][coord.y]
 			if (coord.canMoveTo(right)) {
 				moves << right
 			}
 		}
-		if (coord.y > 0) {
-			Coord up = new Coord(coord.x, coord.y-1, map[coord.x][coord.y-1])
-			if (coord.canMoveTo(up)) {
-				moves << up
-			}
-		}
 		if (coord.y < mapLenght-1) {
-			Coord down = new Coord(coord.x, coord.y+1, map[coord.x][coord.y+1])
+			Coord down = map[coord.x][coord.y+1]
 			if (coord.canMoveTo(down)) {
 				moves << down
 			}
 		}
+		if (coord.x > 0) {
+			Coord left = map[coord.x-1][coord.y]
+			if (coord.canMoveTo(left)) {
+				moves << left
+			}
+		}
+		
+		if (coord.y > 0) {
+			Coord up = map[coord.x][coord.y-1]
+			if (coord.canMoveTo(up)) {
+				moves << up
+			}
+		}
+		
 		return moves
 	}
 }
