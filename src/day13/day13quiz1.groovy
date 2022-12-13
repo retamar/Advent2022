@@ -3,38 +3,26 @@ package day13
 
 File input = "docs/day13.txt" as File
 
-def signals = []
-def currentSignal = []
-
+def divider1 = [[2]]
+def divider2 = [[6]]
+def signals = [divider1, divider2]
 input.eachLine { line ->
-	
-	line = line.trim()
 	if (!line) {
-		signals << currentSignal
-		currentSignal = []
 		return
 	}
-	
 	def parsedLine = Eval.me(line)
-	currentSignal << parsedLine
-	
+	signals << parsedLine	
 }
-signals << currentSignal
 
-println signals
 SignalComparator comparator = new SignalComparator()
-def rightOrder = []
+def sortedSignals = signals.sort {def signal1, def signal2 -> comparator.compare(signal1, signal2)  }
 
-signals.each {pair ->
-	int comparing = comparator.compare(pair[0], pair[1])  
-	println "$pair -> $comparing"
-	rightOrder << (comparing <= 0)	
-}
-println rightOrder
-
-int result = 0
-rightOrder.eachWithIndex { it, index-> 
-	result += (it ? index+1 : 0)	
+sortedSignals.each {
+	println it
 }
 
-println result
+int divider1Position = sortedSignals.indexOf(divider1)+1
+int divider2Position = sortedSignals.indexOf(divider2)+1
+
+int decoderKey = divider1Position*divider2Position
+println decoderKey
