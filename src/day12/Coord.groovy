@@ -24,9 +24,6 @@ class Coord {
 		return HEIGHT_RANGE.indexOf(height) 
 	}
 	
-	int distanceTo(Coord coord) {
-		Math.abs(this.x-coord.x)+Math.abs(this.y-coord.y)
-	}
 	
 	boolean canMoveTo(Coord coord) {
 		return this.translateHeight()+CLIMB_SKILL >= coord.translateHeight()
