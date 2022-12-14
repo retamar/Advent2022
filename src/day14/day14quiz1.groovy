@@ -8,4 +8,4 @@ println cave.walls
 
 cave.startSandFlow()
 cave.printBlocks()
-println "SAND BLOCKS ${cave.allocatedSandBlockNum}"
+println "SAND BLOCKS ${cave.allocatedSandBlockNum-1}"

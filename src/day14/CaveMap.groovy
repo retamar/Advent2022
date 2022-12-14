@@ -35,10 +35,18 @@ class CaveMap {
 
 		walls = walls.sort{it.depthRange.from}
 		maxDepth = walls.depthRange.to.max()
-		minX = walls.xRange.to.min()
+		minX = walls.xRange.from.min()
 		maxX = walls.xRange.to.max()
 	}
 	
+	void addFloorAtDepthLevelBelow(int depth) {
+		maxDepth += depth
+		int width = maxX-minX
+		minX = minX-(depth*width)
+		maxX = maxX+(depth*width)
+		walls << new Wall(xRange:minX..maxX, depthRange:maxDepth..maxDepth)
+		
+	}
 	
 	boolean canFallTo(int x, int depth) {
 		
@@ -58,7 +66,7 @@ class CaveMap {
 	void printBlocks() {
 		println ""
 		(0..maxDepth).each {depth ->
-			print "$depth "
+			print String.format("%02d", depth)
 			(minX-1..maxX+1).each {x ->
 				if (walls.find{it.isBlocked(x, depth)}) {
 					print "#"
@@ -110,6 +118,6 @@ class CaveMap {
 	}
 	
 	int getAllocatedSandBlockNum() {
-		return sandBlocks.size()-1
+		return sandBlocks.size()
 	}
 }
