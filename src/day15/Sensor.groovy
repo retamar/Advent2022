@@ -6,20 +6,19 @@ class Sensor {
 	
 	int sensorY
 	
-	int beaconX
 	
-	int beaconY
+	def beacon
 	
-	Sensor(int sensorX, int sensorY, int beaconX, int beaconY) {
+	
+	Sensor(int sensorX, int sensorY, def beacon) {
 		super()
 		this.sensorX = sensorX
 		this.sensorY = sensorY
-		this.beaconX = beaconX
-		this.beaconY = beaconY
+		this.beacon = beacon
 	}
 	
 	int getDistanceToBeacon() {		
-		return Math.abs(sensorX-beaconX)+Math.abs(sensorY-beaconY)		
+		return Math.abs(sensorX-beacon[0])+Math.abs(sensorY-beacon[1])		
 	}
 	
 	def notBeaconPointsAtRow(int row) {
@@ -41,7 +40,7 @@ class Sensor {
 	}
 	
 	String toString() {
-		return "S: ($sensorX, $sensorY) - B:($beaconX, $beaconY)"
+		return "S: ($sensorX, $sensorY) - B: $beacon"
 	}
 	
 }

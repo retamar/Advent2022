@@ -18,8 +18,9 @@ input.eachLine { line ->
 	int beaconX = ((parsedBeaconData[0]-"x=").trim()) as Integer
 	int beaconY = ((parsedBeaconData[1]-"y=").trim()) as Integer
 	
-	sensors << new Sensor(sensorX, sensorY, beaconX, beaconY)
-	beacons << [beaconX, beaconY]
+	def beacon = [beaconX, beaconY] 
+	sensors << new Sensor(sensorX, sensorY, beacon)
+	beacons << beacon
 	
 }
 
