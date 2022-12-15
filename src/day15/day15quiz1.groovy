@@ -1,6 +1,6 @@
 package day15
 
-File input = "docs/day15test.txt" as File
+File input = "docs/day15.txt" as File
 
 
 def sensors = []
@@ -26,7 +26,7 @@ input.eachLine { line ->
 
 println sensors
 
-int rowToBeTested = 10//2000000
+int rowToBeTested = 2000000
 def notBeaconPoints = [] as Set
 def beaconsInRange = [] as Set
 
