@@ -17,10 +17,15 @@ input.eachLine { line ->
 	int beaconX = ((parsedBeaconData[0]-"x=").trim()) as Integer
 	int beaconY = ((parsedBeaconData[1]-"y=").trim()) as Integer
 	
-	sensors << [sensor:[x:sensorX, y:sensorY], beacon:[x:beaconX, y:beaconY]]
+	sensors << new Sensor(sensorX, sensorY, beaconX, beaconY)
 	
 }
 
-
 println sensors
+
+int rowToBeTested = 10
+
+sensors.each {
+	
+}
 
