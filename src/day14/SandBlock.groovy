@@ -15,7 +15,12 @@ class SandBlock {
 	
 	
 	boolean equals(Object other) {
-		if (!other instanceof SandBlock) {
+		
+		if (other instanceof List) {
+			return x==other[0] && depth==other[1]
+		}
+		
+		if (!(other instanceof SandBlock)) {
 			return false
 		}
 		

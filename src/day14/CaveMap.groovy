@@ -26,10 +26,26 @@ class CaveMap {
 				int depth = parsedPoint[1] as Integer
 
 				if (wallInProgress) {
-					walls << new Wall(xRange:((wallInProgress.x)..x), depthRange: ((wallInProgress.depth)..depth))
+					Wall toBeConstructed = new Wall(xRange:((wallInProgress.x)..x), depthRange: ((wallInProgress.depth)..depth))
+					Wall precedentWall = walls.find{it -> it.precedentTo(toBeConstructed)}
+					Wall nextWall = walls.find{it -> it.nextTo(toBeConstructed)}
+					
+					if (precedentWall) {
+						toBeConstructed.xRange = (precedentWall.xRange.from..toBeConstructed.xRange.to)
+						walls.removeElement(precedentWall)
+					}
+					
+					if (nextWall) {
+						toBeConstructed.xRange = (toBeConstructed.xRange.from..nextWall.xRange.to)
+						walls.removeElement(nextWall)
+					}
+					
+					walls << toBeConstructed
+															
 				}
 
 				wallInProgress = [x:x, depth:depth]
+		
 			}
 		}
 
@@ -39,13 +55,18 @@ class CaveMap {
 		maxX = walls.xRange.to.max()
 	}
 	
+
+	
 	void addFloorAtDepthLevelBelow(int depth) {
 		maxDepth += depth
-		int width = maxX-minX
-		minX = minX-(depth*width)
-		maxX = maxX+(depth*width)
+		minX = startingSandPosition-maxDepth-2
+		maxX = startingSandPosition+maxDepth+2
 		walls << new Wall(xRange:minX..maxX, depthRange:maxDepth..maxDepth)
 		
+	}
+	
+	boolean blockedByWall(int x, int depth) {
+		return walls.find{it.isBlocked(x, depth)}
 	}
 	
 	boolean canFallTo(int x, int depth) {
@@ -54,7 +75,7 @@ class CaveMap {
 			return false
 		}
 		
-		def blockingWall = walls.find{it.isBlocked(x, depth)}
+		boolean blockingWall = blockedByWall(x,depth)
 		if (blockingWall) {
 			return false
 		}
@@ -66,7 +87,7 @@ class CaveMap {
 	void printBlocks() {
 		println ""
 		(0..maxDepth).each {depth ->
-			print String.format("%02d", depth)
+			print String.format("%03d", depth)
 			(minX-1..maxX+1).each {x ->
 				if (walls.find{it.isBlocked(x, depth)}) {
 					print "#"
@@ -83,9 +104,11 @@ class CaveMap {
 
 	
 	void startSandFlow() {
+		int blocks = 1
 		while (true) {
+			println "THROWING ${blocks++} BLOCKS"
 			boolean sandBlocked = false
-			SandBlock fallingBlock = new SandBlock(startingSandPosition, 0)
+			SandBlock fallingBlock = new SandBlock(startingSandPosition, 0)			
 			sandBlocks << fallingBlock
 			while (!sandBlocked) {
 				if (canFallTo(fallingBlock.x, fallingBlock.depth+1)) {
