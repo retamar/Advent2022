@@ -18,25 +18,19 @@ class Sensor {
 	}
 	
 	int getDistanceToBeacon() {		
-		return Math.abs(sensorX-beacon[0])+Math.abs(sensorY-beacon[1])		
+		return Math.abs(sensorX-beacon.x)+Math.abs(sensorY-beacon.y)		
 	}
 	
 	def notBeaconPointsAtRow(int row) {
 		int distanceToRow = Math.abs(sensorY - row)
 		if (distanceToRow > this.distanceToBeacon) {
-			return []
+			return null
 		}
 		
 		
 		int xWidth = this.distanceToBeacon - distanceToRow
-		def points = []
-		(this.sensorX-xWidth..this.sensorX+xWidth).each{
-			points << [it,row]
-		}
-		
-		println "${this} -> $points -> ${points.size()} -> $distanceToBeacon"
-		
-		return points
+		def result = [from:this.sensorX-xWidth,to:this.sensorX+xWidth]
+		return result
 	}
 	
 	String toString() {

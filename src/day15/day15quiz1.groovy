@@ -18,7 +18,7 @@ input.eachLine { line ->
 	int beaconX = ((parsedBeaconData[0]-"x=").trim()) as Integer
 	int beaconY = ((parsedBeaconData[1]-"y=").trim()) as Integer
 	
-	def beacon = [beaconX, beaconY] 
+	def beacon = [x:beaconX, y:beaconY] 
 	sensors << new Sensor(sensorX, sensorY, beacon)
 	beacons << beacon
 	
@@ -26,14 +26,61 @@ input.eachLine { line ->
 
 println sensors
 
-int rowToBeTested = 10
-def notBeaconPoints = ([] as Set)
+int rowToBeTested = 10//2000000
+def notBeaconPoints = [] as Set
+def beaconsInRange = [] as Set
+
+def addRangeToNotBeaconPoints = {def range ->
+	
+	if (!range) {
+		return
+	}
+		
+	def precedentRange = notBeaconPoints.find{range.from <= it.to && it.from<=range.from}		
+	def nextRange = notBeaconPoints.find{range.from <= it.to && it.to >=range.to}
+	
+	def rangesToJoin = [range]	
+	
+	if (precedentRange) {
+		notBeaconPoints.remove(precedentRange)
+		rangesToJoin << precedentRange		
+	}
+	
+	if (nextRange) {
+		notBeaconPoints.remove(nextRange)
+		rangesToJoin << nextRange
+	}
+	
+	
+	range.from = rangesToJoin.from.min()
+	range.to = rangesToJoin.to.max()
+	notBeaconPoints << range
+} 
+
 sensors.each {Sensor sensor->
-	notBeaconPoints.addAll(sensor.notBeaconPointsAtRow(rowToBeTested))
+	addRangeToNotBeaconPoints(sensor.notBeaconPointsAtRow(rowToBeTested))
 }
 
-notBeaconPoints.removeAll(beacons)
+beacons.each{beacon->
+	if (beacon.y != rowToBeTested) {
+		return
+	}
+	notBeaconPoints.each{range ->
+		if (beacon.x>=range.from && beacon.x<=range.to) {
+			println "B $beacon in R:$range"
+			beaconsInRange<<beacon
+		}		
+	} 
+}
+
+int numOfNotBeaconPoints = 0
+notBeaconPoints.each { range ->	
+	numOfNotBeaconPoints += Math.abs(range.to-range.from+1)	
+}
 
 println notBeaconPoints
-println notBeaconPoints.size()
+println numOfNotBeaconPoints
+println beaconsInRange
+println numOfNotBeaconPoints-beaconsInRange.size()
+
 
