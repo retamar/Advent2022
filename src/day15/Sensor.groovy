@@ -29,6 +29,9 @@ class Sensor {
 		return Math.abs(sensorY-row)
 	}
 	
+	boolean isInRange(int x, int y) {
+		return (getDistanceToBeacon()>=getDistanceToPoint(x, y))
+	}
 	
 	def notBeaconPointsAtRow(int row) {
  
@@ -42,45 +45,44 @@ class Sensor {
 		return result
 	}
 	
-	def getExternalPerimeter(int mapSize) {
-		
+	def getTopLeftPerimeter() {
 		int distance = distanceToBeacon
-		def externalPerimeter = [] as Set
+		def perimeter = [:]
 		
-		for (int y = sensorY; y<=Math.max(0, sensorY-distance); y++) {
-			int xWidth = this.distanceToBeacon - getDistanceToRow(y)
-			externalPerimeter.add([x:sensorX-xWidth-1, y:y, sensor:this])
-			externalPerimeter.add([x:sensorX-xWidth-1, y:y-1, sensor:this])
-		}
+		def top = [y:sensorY-distance-1, x:sensorX]
+		def left = [y:sensorY, x:sensorX-distance-1]
 		
+		return [from:top, to:left]
+	}
+	
+	def getTopRightPerimeter() {
+		int distance = distanceToBeacon
+		def perimeter = [:]
 		
-		for (int y = sensorY; y<=sensorY+distance; y++) {
-			int xWidth = this.distanceToBeacon - getDistanceToRow(y)
-			externalPerimeter.add([x:sensorX-xWidth-1, y:y, sensor:this])
-			externalPerimeter.add([x:sensorX-xWidth-1, y:y-1, sensor:this])
-		}
+		def top = [y:sensorY-distance-1, x:sensorX]
+		def right = [y:sensorY, x:sensorX+distance+1]
 		
-		for (int y = sensorY; y<=sensorY+distance; y++) {
-			int xWidth = this.distanceToBeacon - getDistanceToRow(y)
-			externalPerimeter.add([x:sensorX+xWidth+1, y:y, sensor:this])
-			externalPerimeter.add([x:sensorX+xWidth+1, y:y+1, sensor:this])
-		}
+		return [from:top, to:right]
+	}
+	
+	def getBottomRightPerimeter() {
+		int distance = distanceToBeacon
+		def perimeter = [:]
 		
-		for (int y = sensorY-distance; y<=sensorY; y++) {
-			int xWidth = this.distanceToBeacon - getDistanceToRow(y)
-			externalPerimeter.add([x:sensorX-xWidth-1, y:y, sensor:this])
-			externalPerimeter.add([x:sensorX-xWidth-1, y:y+1, sensor:this])
-		}
+		def bottom = [y:sensorY+distance+1, x:sensorX]
+		def right = [y:sensorY, x:sensorX+distance+1]
 		
+		return [from:bottom, to:right]
+	}
+	
+	def getBottomLeftPerimeter() {
+		int distance = distanceToBeacon
+		def perimeter = [:]
 		
-		for (int y = sensorY-distance; y<=sensorY; y++) {
-			int xWidth = this.distanceToBeacon - getDistanceToRow(y)
-			externalPerimeter.add([x:sensorX-xWidth+1, y:y, sensor:this])
-			externalPerimeter.add([x:sensorX-xWidth+1, y:y+1, sensor:this])			
-		}
+		def bottom = [y:sensorY+distance+1, x:sensorX]
+		def left = [y:sensorY, x:sensorX-distance-1]
 		
-		
-		return externalPerimeter
+		return [from:bottom, to:left]
 	}
 	
 	
